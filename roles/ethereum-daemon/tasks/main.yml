@@ -1,0 +1,66 @@
+---
+# tasks file for ethereum-daemon
+#- name: Install epel
+#  yum:
+#    name: epel-release
+#    state: latest
+#    update_cache: yes
+- name: "Packages for system"
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  with_items: "{{ system_packages }}"
+
+- name: "Packages for compilation"
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  with_items: "{{ compilation_packages }}"
+
+- name: "Retrieve ethereum source"
+  git:
+    repo: "{{ repo_url }}"
+    version: "{{ repo_checkout }}"
+    dest: /code
+    recursive: yes
+    depth: 1
+
+- name: "Run install_deps script"
+  command: "./scripts/install_deps.sh"
+  args:
+    chdir: /code
+
+- file: path=/code/build state=directory
+
+- name: "Run cmake"
+  command: "cmake .."
+  args:
+    chdir: /code/build
+  environment:
+    CFLAGS: "-Wno-error"
+    CXXFLAGS: "-Wno-error"
+
+- name: "Run make"
+  command: "make -j{{ ansible_processor_cores }}"
+  args:
+    chdir: /code/build
+  environment:
+    CFLAGS: "-Wno-error"
+    CXXFLAGS: "-Wno-error"
+
+- name: "Run make install"
+  command: "make install"
+  args:
+    chdir: /code/build
+
+- name: "Clean up compilation packages"
+  apt:
+    name: "{{ item }}"
+    autoremove: yes
+    autoclean: yes
+    state: absent
+  with_items: "{{ compilation_packages }}"
+
+- file: path=/code state=absent

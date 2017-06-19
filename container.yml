@@ -1,0 +1,9 @@
+version: "2"
+settings:
+  conductor_base: ubuntu:xenial
+services:
+  app:
+    from: ubuntu:xenial
+    roles:
+      - ethereum-daemon
+    command: [/usr/local/bin/eth]

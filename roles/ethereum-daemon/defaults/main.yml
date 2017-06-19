@@ -1,0 +1,21 @@
+---
+# defaults file for ethereum-daemon
+repo_url: "https://github.com/ethereum/cpp-ethereum.git"
+repo_checkout: "develop"
+
+system_packages:
+  - ca-certificates
+  - libleveldb-dev
+  - libcurl4-openssl-dev
+  - libmicrohttpd-dev
+  - libminiupnpc-dev
+  - libgmp-dev
+
+compilation_packages:
+  - automake
+  - autotools-dev
+  - build-essential
+  - cmake
+  - curl
+  - git
+  - libboost-all-dev

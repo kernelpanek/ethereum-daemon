@@ -1,0 +1,7 @@
+galaxy_info:
+  author: kernelpanek
+  description: Ethereum in docker via ansible-container
+  company: kernelpanek
+  license: MIT
+  min_ansible_container_version: 0.9.1
+  tags: []
